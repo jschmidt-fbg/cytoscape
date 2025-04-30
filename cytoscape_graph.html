@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lineage Graph - Cytoscape.js</title>
+  <script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    #cy {
+      width: 100%;
+      height: 100vh;
+      display: block;
+    }
+    .highlighted {
+      background-color: #f96;
+      line-color: #f96;
+      target-arrow-color: #f96;
+    }
+  </style>
+</head>
+<body>
+  <div id="cy"></div>
+
+  <script>
+    // Laden der externen JSON-Daten
+    fetch('data.json')
+      .then(response => response.json())
+      .then(data => {
+        // Build nodes and edges from data
+        const nodeToId = {};
+        const edges = [];
+        data.forEach(rec => {
+          const parent = `${rec.parent_db}.${rec.parent_schema}.${rec.parent_name}`;
+          const child = `${rec.child_db}.${rec.child_schema}.${rec.child_name}`;
+          if (!nodeToId[parent]) nodeToId[parent] = `N${Object.keys(nodeToId).length}`;
+          if (!nodeToId[child]) nodeToId[child] = `N${Object.keys(nodeToId).length}`;
+          edges.push({ source: nodeToId[parent], target: nodeToId[child] });
+        });
+
+        // Cytoscape configuration
+        const cy = cytoscape({
+          container: document.getElementById('cy'),
+          elements: [
+            ...Object.keys(nodeToId).map(node => ({
+              data: { id: nodeToId[node], label: node }
+            })),
+            ...edges.map(edge => ({
+              data: { source: edge.source, target: edge.target }
+            }))
+          ],
+          layout: {
+            name: 'breadthfirst',
+            directed: true,
+            padding: 10,
+            spacingFactor: 1.5,
+            orientation: 'vertical'
+          },
+          style: [
+            {
+              selector: 'node',
+              style: {
+                'label': 'data(label)',
+                'text-valign': 'center',
+                'text-halign': 'center',
+                'shape': 'round-rectangle',
+                'width': 'label',
+                'padding': '10'
+              }
+            },
+            {
+              selector: 'edge',
+              style: {
+                'curve-style': 'bezier',
+                'target-arrow-shape': 'triangle'
+              }
+            },
+            {
+              selector: '.highlighted',
+              style: {
+                'background-color': '#f96',
+                'line-color': '#f96',
+                'target-arrow-color': '#f96'
+              }
+            }
+          ]
+        });
+
+        // Highlighting when clicking nodes
+        cy.on('tap', 'node', evt => {
+          cy.elements().removeClass('highlighted');
+          const node = evt.target;
+          node.addClass('highlighted');
+          node.connectedEdges().addClass('highlighted');
+          node.connectedEdges().connectedNodes().addClass('highlighted');
+        });
+      });
+  </script>
+</body>
+</html>

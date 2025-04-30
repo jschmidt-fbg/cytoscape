@@ -1,0 +1,58 @@
+[
+  {
+    "parent_db": "DWH_FBG_DEV",
+    "parent_schema": "ACCESSLAYER",
+    "parent_name": "Buchungen",
+    "child_db": "DWH_FBG_DEV",
+    "child_schema": "BUSINESS_RULES",
+    "child_name": "BUCHUNG_S_DVB_HUB_B_100_AL_BUCHUNGEN"
+  },
+  {
+    "parent_db": "DWH_FBG_DEV",
+    "parent_schema": "BUSINESS_RULES",
+    "parent_name": "BUCHUNG_S_DVB_HUB_B_100_AL_BUCHUNGEN",
+    "child_db": "DWH_FBG_DEV",
+    "child_schema": "BUSINESSOBJECTS",
+    "child_name": "BUCHUNG_S_DVB_HUB"
+  },
+  {
+    "parent_db": "DWH_FBG_DEV",
+    "parent_schema": "BUSINESSOBJECTS",
+    "parent_name": "BUCHUNG_S_DVB_HUB",
+    "child_db": "DWH_FBG_DEV",
+    "child_schema": "DATAVAULT",
+    "child_name": "H_BELEG"
+  },
+  {
+    "parent_db": "DWH_FBG_DEV",
+    "parent_schema": "BUSINESSOBJECTS",
+    "parent_name": "BUCHUNG_S_DVB_HUB",
+    "child_db": "DWH_FBG_DEV",
+    "child_schema": "DATAVAULT",
+    "child_name": "H_BUCHUNG"
+  },
+  {
+    "parent_db": "DWH_FBG_DEV",
+    "parent_schema": "BUSINESSOBJECTS",
+    "parent_name": "BUCHUNG_S_DVB_HUB",
+    "child_db": "DWH_FBG_DEV",
+    "child_schema": "DATAVAULT",
+    "child_name": "L_BUCHUNG_T_BELEG_F_DRV"
+  },
+  {
+    "parent_db": "DWH_FBG_DEV",
+    "parent_schema": "BUSINESSOBJECTS",
+    "parent_name": "BUCHUNG_S_DVB_HUB",
+    "child_db": "DWH_FBG_DEV",
+    "child_schema": "DATAVAULT",
+    "child_name": "S_BELEG_S_DVBLZ_R_HLP_KNT_DVB_HUB_099_OUT_BELEG_F_BASISDATEN_C"
+  },
+  {
+    "parent_db": "DWH_FBG_DEV",
+    "parent_schema": "BUSINESSOBJECTS",
+    "parent_name": "BUCHUNG_S_DVB_HUB",
+    "child_db": "DWH_FBG_DEV",
+    "child_schema": "DATAVAULT",
+    "child_name": "S_BUCHUNG_S_DVBLZ_R_HLP_KNT_DVB_HUB_099_OUT_BUCHUNGEN_F_BASISDATEN_V2_C"
+  }
+]
