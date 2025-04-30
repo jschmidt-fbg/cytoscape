@@ -27,7 +27,7 @@
   <div id="cy"></div>
 
   <script>
-    // JSON data
+    // JSON data (ersetzte dies mit Deiner realen JSON-Datei)
     const data = [
       { "parent_db": "DWH_FBG_DEV", "parent_schema": "ACCESSLAYER", "parent_name": "Buchungen", "child_db": "DWH_FBG_DEV", "child_schema": "BUSINESS_RULES", "child_name": "BUCHUNG_S_DVB_HUB_B_100_AL_BUCHUNGEN" },
       { "parent_db": "DWH_FBG_DEV", "parent_schema": "BUSINESS_RULES", "parent_name": "BUCHUNG_S_DVB_HUB_B_100_AL_BUCHUNGEN", "child_db": "DWH_FBG_DEV", "child_schema": "BUSINESSOBJECTS", "child_name": "BUCHUNG_S_DVB_HUB" },
@@ -55,7 +55,7 @@
       container: document.getElementById('cy'),
       elements: [
         ...Object.keys(nodeToId).map(node => ({
-          data: { id: nodeToId[node], label: node }
+          data: { id: nodeToId[node], label: node, collapsable: true }  // Mark nodes as collapsable
         })),
         ...edges.map(edge => ({
           data: { source: edge.source, target: edge.target }
@@ -77,7 +77,8 @@
             'text-halign': 'center',
             'shape': 'round-rectangle',
             'width': 'label',
-            'padding': '10'
+            'padding': '10',
+            'background-color': '#ff6600'
           }
         },
         {
@@ -109,7 +110,7 @@
 
     // Adding Collapse/Expand functionality (using compound nodes)
     cy.nodes().forEach(node => {
-      node.data('collapsable', true);  // Make nodes collapsable
+      node.data('collapsed', false);  // Track collapsed state
       node.on('tap', () => {
         const isCollapsed = node.data('collapsed');
         if (isCollapsed) {
