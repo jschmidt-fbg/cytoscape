@@ -4,14 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Interactive Lineage Graph - Vis.js</title>
-  <!-- Vis.js CDN korrekt eingebunden -->
-  <script type="text/javascript" src="https://unpkg.com/vis-network@9.1.0/dist/vis-network.min.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/vis-network/peer/vis-network.min.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #2b2b2b; /* Dark background */
+      background-color: #2b2b2b; /* Dunkler Hintergrund */
       color: white;
     }
     #network {
@@ -34,19 +33,19 @@
         // Netzwerkoptionen
         var options = {
           nodes: {
-            shape: 'dot',  // Vordefinierte Form für den Knoten (z.B. 'dot', 'ellipse', 'box')
-            size: 30,  // Vordefinierte Größe für die Knoten
+            shape: 'box', // Knotenform: Box (square)
             font: { color: '#ffffff', size: 14 },
             color: {
-              background: '#3366cc', // Blaue Hintergrundfarbe für Knoten
-              border: '#003366',
+              background: '#3366cc', // Setze Knotenfarbe auf Blau
+              border: '#003366', // Dunkelblauer Rand
               highlight: {
-                background: '#ffcc00',
-                border: '#ff6600'
+                background: '#ffcc00', // Gelbe Hervorhebung für Knoten
+                border: '#ff6600' // Orangene Hervorhebung für Knoten
               }
             },
             borderWidth: 3,
-            widthConstraint: { maximum: 200 }
+            widthConstraint: { maximum: 200 },
+            collapsed: false // Zuerst expandiert
           },
           edges: {
             color: '#ffffff',
@@ -68,10 +67,10 @@
             tooltipDelay: 200,
           },
           physics: {
-            enabled: false, // Deaktiviert physikalische Bewegung
+            enabled: false, // Deaktiviert die physikalische Bewegung
           },
           manipulation: {
-            enabled: true, // Aktiviert Bearbeitung
+            enabled: true, // Bearbeitung aktivieren
           },
           configure: {
             enabled: true,
