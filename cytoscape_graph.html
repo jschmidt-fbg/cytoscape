@@ -80,27 +80,6 @@
 
         var container = document.getElementById('network');
         var network = new vis.Network(container, { nodes: nodes, edges: edges }, options);
-
-        // Kollapsen und Expandieren von Knoten
-        network.on("selectNode", function (params) {
-          var selectedNodeId = params.nodes[0];
-          let selectedNode = nodes.get(selectedNodeId);
-
-          // Überprüfen, ob der Knoten expandiert oder kollabiert werden soll
-          var connectedEdges = network.getConnectedEdges(selectedNodeId);
-          
-          connectedEdges.forEach(function(edgeId) {
-            var edge = edges.get(edgeId);
-            if (edge.hidden === true) {
-              edge.hidden = false;  // Zeige die Kante an (expandieren)
-            } else {
-              edge.hidden = true;  // Verstecke die Kante (kollabieren)
-            }
-            edges.update(edge);  // Aktualisiere die Kante
-          });
-          
-          network.redraw();
-        });
       });
   </script>
 </body>
