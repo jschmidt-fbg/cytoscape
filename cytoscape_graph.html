@@ -4,13 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Interactive Lineage Graph - Vis.js</title>
-  <script type="text/javascript" src="https://unpkg.com/vis-network@9.1.0/dist/vis-network.min.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/vis-network/peer/vis-network.min.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #2b2b2b;
+      background-color: #2b2b2b; /* Dark background */
       color: white;
     }
     #network {
@@ -36,8 +36,8 @@
             shape: 'box',
             font: { color: '#ffffff', size: 14 },
             color: {
-              background: '#ff6600',
-              border: '#cc5200',
+              background: '#3366cc', // Setze die Farbe auf Blau
+              border: '#003366',
             },
             borderWidth: 2,
             widthConstraint: { maximum: 200 }
