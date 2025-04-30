@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lineage Graph - Cytoscape.js</title>
+  <title>Interactive Lineage Graph - Cytoscape.js</title>
   <script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
   <style>
     body {
@@ -27,78 +27,100 @@
   <div id="cy"></div>
 
   <script>
-    // Laden der externen JSON-Daten
-    fetch('data.json')
-      .then(response => response.json())
-      .then(data => {
-        // Build nodes and edges from data
-        const nodeToId = {};
-        const edges = [];
-        data.forEach(rec => {
-          const parent = `${rec.parent_db}.${rec.parent_schema}.${rec.parent_name}`;
-          const child = `${rec.child_db}.${rec.child_schema}.${rec.child_name}`;
-          if (!nodeToId[parent]) nodeToId[parent] = `N${Object.keys(nodeToId).length}`;
-          if (!nodeToId[child]) nodeToId[child] = `N${Object.keys(nodeToId).length}`;
-          edges.push({ source: nodeToId[parent], target: nodeToId[child] });
-        });
+    // JSON data
+    const data = [
+      { "parent_db": "DWH_FBG_DEV", "parent_schema": "ACCESSLAYER", "parent_name": "Buchungen", "child_db": "DWH_FBG_DEV", "child_schema": "BUSINESS_RULES", "child_name": "BUCHUNG_S_DVB_HUB_B_100_AL_BUCHUNGEN" },
+      { "parent_db": "DWH_FBG_DEV", "parent_schema": "BUSINESS_RULES", "parent_name": "BUCHUNG_S_DVB_HUB_B_100_AL_BUCHUNGEN", "child_db": "DWH_FBG_DEV", "child_schema": "BUSINESSOBJECTS", "child_name": "BUCHUNG_S_DVB_HUB" },
+      { "parent_db": "DWH_FBG_DEV", "parent_schema": "BUSINESSOBJECTS", "parent_name": "BUCHUNG_S_DVB_HUB", "child_db": "DWH_FBG_DEV", "child_schema": "DATAVAULT", "child_name": "H_BELEG" },
+      { "parent_db": "DWH_FBG_DEV", "parent_schema": "BUSINESSOBJECTS", "parent_name": "BUCHUNG_S_DVB_HUB", "child_db": "DWH_FBG_DEV", "child_schema": "DATAVAULT", "child_name": "H_BUCHUNG" },
+      { "parent_db": "DWH_FBG_DEV", "parent_schema": "BUSINESSOBJECTS", "parent_name": "BUCHUNG_S_DVB_HUB", "child_db": "DWH_FBG_DEV", "child_schema": "DATAVAULT", "child_name": "L_BUCHUNG_T_BELEG_F_DRV" },
+      { "parent_db": "DWH_FBG_DEV", "parent_schema": "BUSINESSOBJECTS", "parent_name": "BUCHUNG_S_DVB_HUB", "child_db": "DWH_FBG_DEV", "child_schema": "DATAVAULT", "child_name": "S_BELEG_S_DVBLZ_R_HLP_KNT_DVB_HUB_099_OUT_BELEG_F_BASISDATEN_C" },
+      { "parent_db": "DWH_FBG_DEV", "parent_schema": "BUSINESSOBJECTS", "parent_name": "BUCHUNG_S_DVB_HUB", "child_db": "DWH_FBG_DEV", "child_schema": "DATAVAULT", "child_name": "S_BUCHUNG_S_DVBLZ_R_HLP_KNT_DVB_HUB_099_OUT_BUCHUNGEN_F_BASISDATEN_V2_C" }
+      // Add more data here
+    ];
 
-        // Cytoscape configuration
-        const cy = cytoscape({
-          container: document.getElementById('cy'),
-          elements: [
-            ...Object.keys(nodeToId).map(node => ({
-              data: { id: nodeToId[node], label: node }
-            })),
-            ...edges.map(edge => ({
-              data: { source: edge.source, target: edge.target }
-            }))
-          ],
-          layout: {
-            name: 'breadthfirst',
-            directed: true,
-            padding: 10,
-            spacingFactor: 1.5,
-            orientation: 'vertical'
-          },
-          style: [
-            {
-              selector: 'node',
-              style: {
-                'label': 'data(label)',
-                'text-valign': 'center',
-                'text-halign': 'center',
-                'shape': 'round-rectangle',
-                'width': 'label',
-                'padding': '10'
-              }
-            },
-            {
-              selector: 'edge',
-              style: {
-                'curve-style': 'bezier',
-                'target-arrow-shape': 'triangle'
-              }
-            },
-            {
-              selector: '.highlighted',
-              style: {
-                'background-color': '#f96',
-                'line-color': '#f96',
-                'target-arrow-color': '#f96'
-              }
-            }
-          ]
-        });
+    // Build nodes and edges
+    const nodeToId = {};
+    const edges = [];
+    data.forEach(rec => {
+      const parent = `${rec.parent_db}.${rec.parent_schema}.${rec.parent_name}`;
+      const child = `${rec.child_db}.${rec.child_schema}.${rec.child_name}`;
+      if (!nodeToId[parent]) nodeToId[parent] = `N${Object.keys(nodeToId).length}`;
+      if (!nodeToId[child]) nodeToId[child] = `N${Object.keys(nodeToId).length}`;
+      edges.push({ source: nodeToId[parent], target: nodeToId[child] });
+    });
 
-        // Highlighting when clicking nodes
-        cy.on('tap', 'node', evt => {
-          cy.elements().removeClass('highlighted');
-          const node = evt.target;
-          node.addClass('highlighted');
-          node.connectedEdges().addClass('highlighted');
-          node.connectedEdges().connectedNodes().addClass('highlighted');
-        });
+    // Cytoscape configuration
+    const cy = cytoscape({
+      container: document.getElementById('cy'),
+      elements: [
+        ...Object.keys(nodeToId).map(node => ({
+          data: { id: nodeToId[node], label: node }
+        })),
+        ...edges.map(edge => ({
+          data: { source: edge.source, target: edge.target }
+        }))
+      ],
+      layout: {
+        name: 'breadthfirst',
+        directed: true,
+        padding: 10,
+        spacingFactor: 1.5,
+        orientation: 'vertical'
+      },
+      style: [
+        {
+          selector: 'node',
+          style: {
+            'label': 'data(label)',
+            'text-valign': 'center',
+            'text-halign': 'center',
+            'shape': 'round-rectangle',
+            'width': 'label',
+            'padding': '10'
+          }
+        },
+        {
+          selector: 'edge',
+          style: {
+            'curve-style': 'bezier',
+            'target-arrow-shape': 'triangle'
+          }
+        },
+        {
+          selector: '.highlighted',
+          style: {
+            'background-color': '#f96',
+            'line-color': '#f96',
+            'target-arrow-color': '#f96'
+          }
+        }
+      ]
+    });
+
+    // Highlighting when clicking nodes
+    cy.on('tap', 'node', evt => {
+      cy.elements().removeClass('highlighted');
+      const node = evt.target;
+      node.addClass('highlighted');
+      node.connectedEdges().addClass('highlighted');
+      node.connectedEdges().connectedNodes().addClass('highlighted');
+    });
+
+    // Adding Collapse/Expand functionality (using compound nodes)
+    cy.nodes().forEach(node => {
+      node.data('collapsable', true);  // Make nodes collapsable
+      node.on('tap', () => {
+        const isCollapsed = node.data('collapsed');
+        if (isCollapsed) {
+          node.data('collapsed', false);
+          node.connectedEdges().style('display', 'element'); // Show edges
+        } else {
+          node.data('collapsed', true);
+          node.connectedEdges().style('display', 'none'); // Hide edges
+        }
       });
+    });
   </script>
 </body>
 </html>
